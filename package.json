@@ -1,0 +1,29 @@
+{
+  "name": "therhythmgardenlevelserver",
+  "version": "0.1.0",
+  "description": "A server for serving TheRhythmGarden levels",
+  "homepage": "https://github.com/Milk-Cool/TheRhythmGardenLevelServer#readme",
+  "bugs": {
+    "url": "https://github.com/Milk-Cool/TheRhythmGardenLevelServer/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Milk-Cool/TheRhythmGardenLevelServer.git"
+  },
+  "license": "MIT",
+  "author": "Milk_Cool",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx server.ts"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.0",
+    "tsx": "^4.20.6"
+  },
+  "dependencies": {
+    "@zip.js/zip.js": "^2.8.10",
+    "express": "^5.1.0"
+  }
+}
