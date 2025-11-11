@@ -13,7 +13,7 @@ type Level = {
 };
 const levels: Record<string, Level> = {};
 
-const { ORIGIN } = process.env;
+const { ORIGIN, HOSTNAME } = process.env;
 
 const handleFile = async path => {
     if(!fs.existsSync(path)) {
@@ -57,7 +57,7 @@ app.get("/", (req, res) => {
     res.header("Access-Control-Allow-Origin", ORIGIN || "*");
     res.send(Object.values(levels).map(x => {
         x = { ...x };
-        x.url = new URL(x.url, req.headers.origin || "http://localhost").href;
+        x.url = new URL(x.url, HOSTNAME || "http://localhost").href;
         return x;
     }));
 });
