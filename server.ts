@@ -61,6 +61,8 @@ app.get("/", (req, res) => {
         return x;
     }));
 });
-app.use(express.static("levels"));
+app.use(express.static("levels", {
+    setHeaders: (res) => res.header("Access-Control-Allow-Origin", ORIGIN || "*")
+}));
 
 app.listen(50960, () => console.log(`listening at :50960!`));
