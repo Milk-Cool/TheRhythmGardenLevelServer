@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import fs from "fs";
 import express from "express";
 import { join, basename } from "path";
@@ -10,6 +12,8 @@ type Level = {
     url: string
 };
 const levels: Record<string, Level> = {};
+
+const { ORIGIN } = process.env;
 
 const handleFile = async path => {
     if(!fs.existsSync(path)) {
@@ -50,6 +54,7 @@ fs.watch("levels", {}, async (etype, name) => await handleFile(join("levels", na
 
 const app = express();
 app.get("/", (req, res) => {
+    res.header("Access-Control-Allow-Origin", ORIGIN || "*");
     res.send(Object.values(levels).map(x => {
         x = { ...x };
         x.url = new URL(x.url, req.headers.origin || "http://localhost").href;

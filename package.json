@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@zip.js/zip.js": "^2.8.10",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0"
   }
 }
