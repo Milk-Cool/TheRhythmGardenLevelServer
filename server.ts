@@ -53,6 +53,9 @@ await Promise.all(fs.readdirSync("levels").map(async path => await handleFile(jo
 fs.watch("levels", {}, async (etype, name) => await handleFile(join("levels", name || "nonexistent")));
 
 const app = express();
+app.use(express.static(join(import.meta.dirname, "levels"), {
+    setHeaders: (res) => res.header("Access-Control-Allow-Origin", ORIGIN || "*")
+}));
 app.get("/", (req, res) => {
     res.header("Access-Control-Allow-Origin", ORIGIN || "*");
     res.send(Object.values(levels).map(x => {
@@ -61,8 +64,5 @@ app.get("/", (req, res) => {
         return x;
     }));
 });
-app.use(express.static("levels", {
-    setHeaders: (res) => res.header("Access-Control-Allow-Origin", ORIGIN || "*")
-}));
 
 app.listen(50960, () => console.log(`listening at :50960!`));
