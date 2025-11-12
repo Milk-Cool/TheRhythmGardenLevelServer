@@ -54,7 +54,8 @@ fs.watch("levels", {}, async (etype, name) => await handleFile(join("levels", na
 
 const app = express();
 app.use(express.static(join(import.meta.dirname, "levels"), {
-    setHeaders: (res) => res.header("Access-Control-Allow-Origin", ORIGIN || "*")
+    setHeaders: (res) => res.header("Access-Control-Allow-Origin", ORIGIN || "*"),
+    cacheControl: false
 }));
 app.get("/", (req, res) => {
     res.header("Access-Control-Allow-Origin", ORIGIN || "*");
