@@ -54,7 +54,8 @@ fs.watch("levels", {}, async (etype, name) => await handleFile(join("levels", na
 
 const app = express();
 app.use((req, res, next) => {
-    if(ALLOW_ITCH_IO && req.headers.origin && (new URL("/", req.headers.origin).host === "itch.io" || new URL("/", req.headers.origin).host.endsWith(".itch.io")))
+    const url = req.headers.origin ? new URL("/", req.headers.origin) : null;
+    if(ALLOW_ITCH_IO && url && (url.host === "itch.io" || url.host.endsWith(".itch.io") || url.host === "itch.zone" || url.host.endsWith(".itch.zone")))
         res.header("Access-Control-Allow-Origin", req.headers.origin);
     else
         res.header("Access-Control-Allow-Origin", ORIGIN || "*");
