@@ -13,7 +13,7 @@ type Level = {
 };
 const levels: Record<string, Level> = {};
 
-const { ORIGIN, HOSTNAME } = process.env;
+const { ORIGIN, HOSTNAME, ALLOW_ITCH_IO } = process.env;
 
 const handleFile = async path => {
     if(!fs.existsSync(path)) {
@@ -53,12 +53,17 @@ await Promise.all(fs.readdirSync("levels").map(async path => await handleFile(jo
 fs.watch("levels", {}, async (etype, name) => await handleFile(join("levels", name || "nonexistent")));
 
 const app = express();
+app.use((req, res, next) => {
+    if(ALLOW_ITCH_IO && req.headers.origin && (new URL("/", req.headers.origin).host === "itch.io" || new URL("/", req.headers.origin).host.endsWith(".itch.io")))
+        res.header("Access-Control-Allow-Origin", req.headers.origin);
+    else
+        res.header("Access-Control-Allow-Origin", ORIGIN || "*");
+    next();
+});
 app.use(express.static(join(import.meta.dirname, "levels"), {
-    setHeaders: (res) => res.header("Access-Control-Allow-Origin", ORIGIN || "*"),
     cacheControl: false
 }));
 app.get("/", (req, res) => {
-    res.header("Access-Control-Allow-Origin", ORIGIN || "*");
     res.send(Object.values(levels).map(x => {
         x = { ...x };
         x.url = new URL(x.url, HOSTNAME || "http://localhost").href;
